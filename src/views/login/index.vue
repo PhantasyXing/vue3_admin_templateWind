@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-view></router-view>
+    <h1>我是一级路由登录页</h1>
   </div>
 </template>
 
