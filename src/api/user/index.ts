@@ -11,6 +11,5 @@ export const API = {
 // 登录接口方法
 export const reqLogin = (data: LoginForm) =>
   request.post<any, LoginRespnseData>(API.LOGIN_URL, data)
-
 // 获取用户信息接口方法
 export const reqUserInfo = () => request.get<UserResponseData>(API.USERINFO_URL)

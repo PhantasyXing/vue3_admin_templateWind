@@ -12,6 +12,8 @@ import globalComponent from '@/components/index'
 import '@/styles/index.scss'
 // 引入路由
 import router from './router'
+// 引入pinia仓库
+import pinia from './store/'
 
 // 获取应用实例对象
 const app = createApp(App)
@@ -22,5 +24,7 @@ app.use(ElementPlus, {
 app.use(globalComponent)
 // 安装路由
 app.use(router)
+// 安装大仓库
+app.use(pinia)
 // 将应用挂载到挂载点上
 app.mount('#app')
