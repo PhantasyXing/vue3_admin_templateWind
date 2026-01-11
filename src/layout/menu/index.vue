@@ -8,21 +8,25 @@
           v-if="!item.meta.hidden"
           @click="goRoute"
         >
+          <el-icon>
+            <component :is="item.meta.icon"></component>
+          </el-icon>
           <template #title>
-            <el-icon>
-              <component :is="item.meta.icon"></component>
-            </el-icon>
             <p>{{ item.meta.title }}</p>
           </template>
         </el-menu-item>
       </template>
       <!-- 有子路由但是只有一个子路由 -->
       <template v-if="item.children && item.children.length === 1">
-        <el-menu-item :index="item.children[0].path" v-if="!item.meta.hidden">
+        <el-menu-item
+          :index="item.children[0].path"
+          v-if="!item.meta.hidden"
+          @click="goRoute"
+        >
+          <el-icon>
+            <component :is="item.children[0].meta.icon"></component>
+          </el-icon>
           <template #title>
-            <el-icon>
-              <component :is="item.children[0].meta.icon"></component>
-            </el-icon>
             <span>{{ item.children[0].meta.title }}</span>
           </template>
         </el-menu-item>
@@ -45,10 +49,12 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+const router = useRouter()
 defineProps(['menuList'])
 
 const goRoute = (vc: any) => {
-  console.log(vc.index)
+  router.push(vc.index)
 }
 </script>
 
@@ -58,8 +64,4 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-* {
-  color: white;
-}
-</style>
+<style scoped lang="scss"></style>

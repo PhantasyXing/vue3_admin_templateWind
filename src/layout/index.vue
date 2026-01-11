@@ -7,25 +7,36 @@
       <!-- 滚动组件 -->
       <el-scrollbar class="scrollbar">
         <!-- 菜单组件 -->
-        <el-menu background-color="$base-menu-background" text-color="white">
+        <el-menu
+          :default-active="$route.path"
+          background-color="$base-menu-background"
+          text-color="white"
+          active-text-color="skyblue"
+        >
           <Menu :menuList="userStore.menuStoreList"></Menu>
         </el-menu>
       </el-scrollbar>
     </div>
     <!-- 顶部导航 -->
-    <div class="layout_tabbar"></div>
+    <div class="layout_tabbar">
+      <Tabber></Tabber>
+    </div>
     <!-- 内容展示区域 -->
     <div class="layout_main">
-      <p style="height: 10000px"></p>
+      <Main></Main>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
 import Logo from './logo/index.vue'
 import Menu from './menu/index.vue'
+import Main from './main/index.vue'
+import Tabber from './tabber/index.vue'
 import useUserStore from '@/store/modules/user'
 const userStore = useUserStore()
+const $route = useRoute()
 </script>
 
 <style scoped lang="scss">
@@ -48,7 +59,6 @@ const userStore = useUserStore()
     position: fixed;
     width: calc(100% - $base-menu-width);
     height: $base-tabbar-height;
-    background-color: blue;
     top: 0;
     left: $base-menu-width;
   }
@@ -56,7 +66,6 @@ const userStore = useUserStore()
     position: absolute;
     width: calc(100% - $base-menu-width);
     height: calc(100vh - $base-tabbar-height);
-    background-color: green;
     top: $base-tabbar-height;
     left: $base-menu-width;
     padding: 20px;
