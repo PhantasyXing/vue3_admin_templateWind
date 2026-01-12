@@ -13,14 +13,14 @@
   ></el-button>
   <el-button size="small" icon="Setting" circle></el-button>
   <img
-    src="../../../../public/logo.png"
+    :src="userStore.avatar"
     alt="头像"
-    style="width: 24px; height: 24px; margin: 0 10px"
+    style="width: 24px; height: 24px; margin: 0 10px; border-radius: 50%"
   />
   <!-- 下拉菜单 -->
   <el-dropdown>
     <span class="el-dropdown-link">
-      admin
+      {{ userStore.username }}
       <el-icon class="el-icon--right">
         <arrow-down />
       </el-icon>
@@ -35,7 +35,9 @@
 
 <script setup lang="ts">
 import useLayoutSettingStore from '@/store/modules/setting'
+import useUserStore from '@/store/modules/user'
 const layoutSettingStore = useLayoutSettingStore()
+const userStore = useUserStore()
 // 刷新按钮的回调
 const updateRefresh = () => {
   layoutSettingStore.refresh = !layoutSettingStore.refresh

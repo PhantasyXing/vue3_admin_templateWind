@@ -1,7 +1,7 @@
 // 引入创建小仓库方法
 import { defineStore } from 'pinia'
 // 引入接口
-import { reqLogin } from '@/api/user/index'
+import { reqLogin, reqUserInfo } from '@/api/user/index'
 // 引入路由
 import { constantRoute } from '@/router/routes'
 // 引入数据类型
@@ -15,6 +15,8 @@ const useUserStore = defineStore('User', {
     return {
       token: GET_TOKEN(), //用户的唯一标识
       menuStoreList: constantRoute,
+      username: '',
+      avatar: '',
     }
   },
 
@@ -34,6 +36,16 @@ const useUserStore = defineStore('User', {
         return 'OK'
       } else {
         return Promise.reject(new Error(result.data.message))
+      }
+    },
+    // 获取用户信息
+    async userInfo() {
+      // 调用获取信息的接口
+      const result = await reqUserInfo()
+      // 如果获取用户信息成功，那就存储用户信息
+      if (result.code === 200) {
+        this.username = result.data.checkUser.username
+        this.avatar = result.data.checkUser.avatar
       }
     },
   },

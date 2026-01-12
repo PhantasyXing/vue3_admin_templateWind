@@ -1,6 +1,7 @@
 // 进行二次封装axios：使用请求与响应拦截器
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import useUserStore from '@/store/modules/user'
 
 // 1. 引入进度条插件和样式
 import nprogress from 'nprogress'
@@ -14,12 +15,15 @@ const request = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
   timeout: 5000,
 })
-
 // 第二步：request实例添加请求拦截器
 request.interceptors.request.use(
   (config) => {
     // 开启进度条
     nprogress.start()
+    const userStore = useUserStore()
+    if (userStore.token) {
+      config.headers.token = userStore.token
+    }
     return config
   },
   (error) => {
