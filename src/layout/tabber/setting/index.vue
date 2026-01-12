@@ -1,6 +1,16 @@
 <template>
-  <el-button size="small" icon="Refresh" circle @click="update"></el-button>
-  <el-button size="small" icon="FullScreen" circle></el-button>
+  <el-button
+    size="small"
+    icon="Refresh"
+    circle
+    @click="updateRefresh"
+  ></el-button>
+  <el-button
+    size="small"
+    icon="FullScreen"
+    circle
+    @click="fullScreen"
+  ></el-button>
   <el-button size="small" icon="Setting" circle></el-button>
   <img
     src="../../../../public/logo.png"
@@ -26,8 +36,22 @@
 <script setup lang="ts">
 import useLayoutSettingStore from '@/store/modules/setting'
 const layoutSettingStore = useLayoutSettingStore()
-const update = () => {
+// 刷新按钮的回调
+const updateRefresh = () => {
   layoutSettingStore.refresh = !layoutSettingStore.refresh
+}
+// 全屏按钮的回调
+const fullScreen = () => {
+  // DOM对象的一个属性：可以用来判断当前是不是全屏模式[全屏：true，不是全屏：false]
+  const full = document.fullscreenElement
+  // 切换全屏模式
+  if (!full) {
+    // 文档根节点的方法requestFullscreen，实现全屏模式
+    document.documentElement.requestFullscreen()
+  } else {
+    // 变为不是全屏模式->退出全屏模式
+    document.exitFullscreen()
+  }
 }
 </script>
 
