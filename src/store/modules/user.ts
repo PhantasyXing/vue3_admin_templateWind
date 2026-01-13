@@ -7,7 +7,7 @@ import { constantRoute } from '@/router/routes'
 // 引入数据类型
 import type { LoginForm, LoginRespnseData } from '@/api/user/type'
 import type { UserStatus } from './type/type'
-import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
+import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 // 创建用户仓库
 const useUserStore = defineStore('User', {
   // 用户数据
@@ -47,6 +47,12 @@ const useUserStore = defineStore('User', {
         this.username = result.data.checkUser.username
         this.avatar = result.data.checkUser.avatar
       }
+    },
+    userLogout() {
+      this.token = ''
+      this.username = ''
+      this.avatar = ''
+      REMOVE_TOKEN()
     },
   },
   getters: {},

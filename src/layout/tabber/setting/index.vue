@@ -27,17 +27,21 @@
     </span>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item>退出登录</el-dropdown-item>
+        <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </template>
   </el-dropdown>
 </template>
 
 <script setup lang="ts">
+import { useRouter, useRoute } from 'vue-router'
 import useLayoutSettingStore from '@/store/modules/setting'
 import useUserStore from '@/store/modules/user'
 const layoutSettingStore = useLayoutSettingStore()
 const userStore = useUserStore()
+// 引入路由器对象和路由对象
+const $router = useRouter()
+const $route = useRoute()
 // 刷新按钮的回调
 const updateRefresh = () => {
   layoutSettingStore.refresh = !layoutSettingStore.refresh
@@ -54,6 +58,13 @@ const fullScreen = () => {
     // 变为不是全屏模式->退出全屏模式
     document.exitFullscreen()
   }
+}
+// 退出登录的回调
+const logout = () => {
+  // 给定一个回调给服务器发请求、用户相关的数据清空、跳转登录页面、携带query参数重新登陆时重定向
+  userStore.userLogout()
+
+  $router.push({ path: '/login', query: { redirect: $route.path } })
 }
 </script>
 

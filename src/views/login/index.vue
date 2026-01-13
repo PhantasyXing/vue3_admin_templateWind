@@ -46,12 +46,13 @@
 import { User, Lock } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
 import useUserStore from '@/store/modules/user'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { ElNotification } from 'element-plus'
 import { getTime } from '@/utils/time'
 
-// 获取路由器
-const router = useRouter()
+// 获取路由器对象和路由对象
+const $router = useRouter()
+const $route = useRoute()
 const userStore = useUserStore()
 const loginForms = ref()
 // 收集账号与密码的数据
@@ -67,8 +68,11 @@ const login = async () => {
   // 通知仓库发请求
   try {
     // 请求成功 -> 跳转首页
+
     await userStore.userLogin(loginForm)
-    router.push('/')
+    const redirect = $route.query.redirect
+    $router.push({ path: (redirect as string) || '/' })
+
     ElNotification({
       type: 'success',
       message: '登录成功',
