@@ -22,6 +22,7 @@ const useUserStore = defineStore('User', {
 
   // 异步|逻辑的地方
   actions: {
+    // 登录账号
     async userLogin(data: LoginForm) {
       // 登录请求
       const result: LoginRespnseData = await reqLogin(data)
@@ -46,8 +47,12 @@ const useUserStore = defineStore('User', {
       if (result.code === 200) {
         this.username = result.data.checkUser.username
         this.avatar = result.data.checkUser.avatar
+        return 'ok'
+      } else {
+        return Promise.reject('获取用户信息失败')
       }
     },
+    // 退出登录
     userLogout() {
       this.token = ''
       this.username = ''

@@ -14,6 +14,8 @@ import '@/styles/index.scss'
 import router from './router'
 // 引入pinia仓库
 import pinia from './store/'
+// 引入路由守卫
+import '@/permission'
 
 // 获取应用实例对象
 const app = createApp(App)
