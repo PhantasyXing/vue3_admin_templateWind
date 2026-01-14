@@ -1,12 +1,16 @@
 // 引入创建小仓库方法
 import { defineStore } from 'pinia'
 // 引入接口
-import { reqLogin, reqUserInfo } from '@/api/user/index'
+import { reqLogin, reqUserInfo, reqLogout } from '@/api/user/index'
 // 引入路由
 import { constantRoute } from '@/router/routes'
 // 引入数据类型
-import type { LoginForm, LoginRespnseData } from '@/api/user/type'
 import type { UserStatus } from './type/type'
+import type {
+  LoginFormData,
+  LoginRespnseData,
+  UserInfoRespnseData,
+} from '@/api/user/type'
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 // 创建用户仓库
 const useUserStore = defineStore('User', {
@@ -23,41 +27,47 @@ const useUserStore = defineStore('User', {
   // 异步|逻辑的地方
   actions: {
     // 登录账号
-    async userLogin(data: LoginForm) {
+    async userLogin(data: LoginFormData) {
       // 登录请求
       const result: LoginRespnseData = await reqLogin(data)
       // 登录请求：成功200-token
       // 登录请求：失败201-登录失败的信息
       if (result.code == 200) {
         // pinia仓库存储一下token
-        this.token = result.data.token as string //告诉 TS，这里的 token 一定是 string
+        this.token = result.data as string //告诉 TS，这里的 token 一定是 string
         // 由于pinia|vuex存储数据其实利用js对象
         // 本地存储持久化存储一份
-        SET_TOKEN(result.data.token as string)
+        SET_TOKEN(result.data as string)
         return 'OK'
       } else {
-        return Promise.reject(new Error(result.data.message))
+        return Promise.reject(new Error(result.message))
       }
     },
     // 获取用户信息
     async userInfo() {
       // 调用获取信息的接口
-      const result = await reqUserInfo()
+      const result: UserInfoRespnseData = await reqUserInfo()
       // 如果获取用户信息成功，那就存储用户信息
       if (result.code === 200) {
-        this.username = result.data.checkUser.username
-        this.avatar = result.data.checkUser.avatar
+        this.username = result.data.name
+        this.avatar = result.data.avatar
         return 'ok'
       } else {
-        return Promise.reject('获取用户信息失败')
+        return Promise.reject(result.message)
       }
     },
     // 退出登录
-    userLogout() {
-      this.token = ''
-      this.username = ''
-      this.avatar = ''
-      REMOVE_TOKEN()
+    async userLogout() {
+      const result: any = await reqLogout()
+      if (result.code === 200) {
+        this.token = ''
+        this.username = ''
+        this.avatar = ''
+        REMOVE_TOKEN()
+        return 'ok'
+      } else {
+        return Promise.reject(result.message)
+      }
     },
   },
   getters: {},

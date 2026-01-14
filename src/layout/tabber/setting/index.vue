@@ -60,9 +60,9 @@ const fullScreen = () => {
   }
 }
 // 退出登录的回调
-const logout = () => {
+const logout = async () => {
   // 给定一个回调给服务器发请求、用户相关的数据清空、跳转登录页面、携带query参数重新登陆时重定向
-  userStore.userLogout()
+  await userStore.userLogout()
 
   $router.push({ path: '/login', query: { redirect: $route.path } })
 }
