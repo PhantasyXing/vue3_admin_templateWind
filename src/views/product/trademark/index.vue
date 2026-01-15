@@ -9,11 +9,29 @@
         width：对应列的宽度
         align：对齐方式
     -->
-    <el-table style="margin: 10px 0" border>
-      <el-table-column width="80px" label="序号" align="center" />
-      <el-table-column label="品牌名称" />
-      <el-table-column label="品牌LOGO" />
-      <el-table-column label="品牌操作" />
+    <el-table style="margin: 10px 0" border :data="trademarkArr">
+      <el-table-column
+        width="80px"
+        label="序号"
+        align="center"
+        type="index"
+      ></el-table-column>
+      <el-table-column label="品牌名称">
+        <template #default="{ row }">
+          <pre>{{ row.tmName }}</pre>
+        </template>
+      </el-table-column>
+      <el-table-column label="品牌LOGO">
+        <template #default="{ row }">
+          <img :src="row.logoUrl" alt="" style="width: 100px; height: 100px" />
+        </template>
+      </el-table-column>
+      <el-table-column label="品牌操作">
+        <template #default>
+          <el-button type="primary" size="small" icon="Edit"></el-button>
+          <el-button type="primary" size="small" icon="Delete"></el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 分页器组件
         pagination
@@ -30,16 +48,32 @@
       :page-sizes="[3, 6, 9, 12]"
       :background="true"
       layout="prev, pager, next, jumper, ->, sizes, total,"
-      :total="400"
+      :total="total"
     />
   </el-card>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
-const currentPage = ref(1)
-const limit = ref(3)
+import { onMounted, ref } from 'vue'
+import { reqHasTrademark } from '@/api/product/trademark/'
+// 当前页码
+const currentPage = ref<number>(1)
+// 每页显示几行
+const limit = ref<number>(3)
+//存储已有品牌数据总数
+const total = ref<number>(0)
+// data数据
+const trademarkArr = ref<any>([])
+const getHasTrademark = async () => {
+  const result = await reqHasTrademark(currentPage.value, limit.value)
+  if (result.code === 200) {
+    // 存储已有品牌总个数
+    total.value = result.data.total
+    trademarkArr.value = result.data.records
+  }
+}
+// 挂载完成先调用一次
+onMounted(() => getHasTrademark())
 </script>
 
 <style scoped lang="scss"></style>
