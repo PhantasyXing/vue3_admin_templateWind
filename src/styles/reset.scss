@@ -83,26 +83,3 @@ button {
 textarea {
   resize: vertical; // 只允许垂直拖动大小，禁止水平拖动破坏布局
 }
-
-// 7. 特殊处理：移除搜索框的默认清除按钮（可选）
-input[type='search']::-webkit-search-decoration,
-input[type='search']::-webkit-search-cancel-button,
-input[type='search']::-webkit-search-results-button,
-input[type='search']::-webkit-search-results-decoration {
-  -webkit-appearance: none;
-}
-
-// 8. 滚动条美化（可选，仅 Webkit 内核浏览器有效）
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
