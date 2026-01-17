@@ -8,9 +8,9 @@ import type {
 } from './type'
 // 统一管理接口
 export const API = {
-  LOGIN_URL: '/admin/acl/index/login',
-  USERINFO_URL: '/admin/acl/index/info',
-  LOGOUT_URL: '/admin/acl/index/logout',
+  LOGIN_URL: '/admin/acl/index/login', //登录接口
+  USERINFO_URL: '/admin/acl/index/info', //获取信息接口
+  LOGOUT_URL: '/admin/acl/index/logout', //登出接口
 } as const
 
 // 暴露请求函数

@@ -5,9 +5,12 @@ import type { TradeMarkResponseData, TradeMark } from './type'
 export const API = {
   // 获取品牌分页列表接口
   TRADEMARK_URL: '/admin/product/baseTrademark/',
-  // 新增品牌接口和更新品牌接口
+  // 新增品牌接口
   ADDTRADEMARK_URL: '/admin/product/baseTrademark/save',
+  // 更新品牌接口
   UPDATETRADEMARK_URL: '/admin/product/baseTrademark/update',
+  // 删除品牌接口
+  DELETETRADEMARK_URL: '/admin/product/baseTrademark/remove/',
 } as const
 
 // 获取已有品牌的接口方法
@@ -28,3 +31,7 @@ export const reqAddOrUpdateTrademark = (data: TradeMark) => {
     return request.post<any, any>(API.ADDTRADEMARK_URL, data)
   }
 }
+
+// 定义删除品牌接口方法
+export const reqDeleteTrademark = (id: number) =>
+  request.delete<any, any>(API.DELETETRADEMARK_URL + id)

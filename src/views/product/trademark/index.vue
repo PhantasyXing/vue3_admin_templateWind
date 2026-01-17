@@ -36,7 +36,16 @@
             icon="Edit"
             @click="updateTrademark(row)"
           ></el-button>
-          <el-button type="primary" size="small" icon="Delete"></el-button>
+          <el-popconfirm
+            :title="`您确定要删除${row.tmName}吗？`"
+            icon="Delete"
+            width="200px"
+            @confirm="deleteTrademark(row.id)"
+          >
+            <template #reference>
+              <el-button type="primary" size="small" icon="Delete"></el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -62,10 +71,7 @@
     />
   </el-card>
   <!-- 对话框组件：在添加品牌与修改已有品牌的业务时候使用结构 -->
-  <!-- 
-        v-model：属性用户的显示与隐藏的true
-        title：设置对话框左上角标题
-    -->
+  <!-- v-model：属性用户的显示与隐藏的true、title：设置对话框左上角标题 -->
   <el-dialog
     v-model="dialogFormVisible"
     :title="trademarkParams.id ? '修改品牌' : '添加品牌'"
@@ -113,6 +119,7 @@ import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import {
   reqHasTrademark,
   reqAddOrUpdateTrademark,
+  reqDeleteTrademark,
 } from '@/api/product/trademark/'
 import { ElMessage } from 'element-plus'
 import type { UploadProps } from 'element-plus'
@@ -278,6 +285,26 @@ const validatorLogoUrl = (rule: any, value: any, callback: any) => {
 const rules = {
   tmName: [{ required: true, trigger: 'blur', validator: validatorTmName }],
   logoUrl: [{ required: true, validator: validatorLogoUrl }],
+}
+// 气泡确认框确定的按钮
+const deleteTrademark = async (id: number) => {
+  const result = await reqDeleteTrademark(id)
+  if (result.code === 200) {
+    // 成功删除
+    ElMessage({
+      type: 'success',
+      message: '删除品牌成功',
+    })
+    // 获取最新数据、并进行页数判定
+    getHasTrademark(
+      trademarkArr.value.length > 1 ? currentPage.value : currentPage.value - 1,
+    )
+  } else {
+    ElMessage({
+      type: 'error',
+      message: `删除品牌失败—${result.message}`,
+    })
+  }
 }
 </script>
 
